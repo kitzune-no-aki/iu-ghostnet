@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<h:head>
+    <title>Ghost Net Reporting</title>
+    <link rel="stylesheet" href="styles.css"/>
+</h:head>
+
+<h:body>
+    <h:form>
+        <!-- Navigation Menu -->
+        <div class="nav-bar">
+            <!-- Show Login and Register buttons if the user is not logged in -->
+            <h:panelGroup rendered="#{login.loggedInUser == null}">
+                <h:commandButton value="Login" action="login.xhtml?faces-redirect=true" />
+                <h:commandButton value="Register" action="register.xhtml?faces-redirect=true" />
+            </h:panelGroup>
+
+            <!-- Show Logout and user-specific options if the user is logged in -->
+            <h:panelGroup rendered="#{login.loggedInUser != null}">
+                <p>Welcome, #{login.loggedInUser.name} #{login.loggedInUser.surname}!</p>
+                <h:commandButton value="Logout" action="#{login.logout}" />
+                <h:commandButton value="Report a Net" action="report.xhtml?faces-redirect=true" />
+                <h:commandButton value="View All Nets" action="dashboard.xhtml?faces-redirect=true" />
+            </h:panelGroup>
+
+        </div>
+
+        <!-- Welcome Message -->
+        <div class="welcome-section">
+            <h2>Welcome to the Ghost Net Reporting App</h2>
+            <p>Help us identify and retrieve ghost nets to protect our oceans!</p>
+        </div>
+    </h:form>
+</h:body>
+</html>

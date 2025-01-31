@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+    <title>Login</title>
+</h:head>
+<h:body>
+    <h:form>
+        <h1>Login</h1>
+
+        <!-- Name Input -->
+        <h:outputLabel for="name" value="Name:" />
+        <h:inputText id="name" value="#{login.name}" required="true" />
+        <h:message for="name" style="color: red;" />
+
+        <!-- Surname Input -->
+        <h:outputLabel for="surname" value="Surname:" />
+        <h:inputText id="surname" value="#{login.surname}" required="true" />
+        <h:message for="surname" style="color: red;" />
+
+        <!-- Phone Number Input -->
+        <h:outputLabel for="phoneNumber" value="Phone Number:" />
+        <h:inputText id="phoneNumber" value="#{login.phoneNumber}" required="false" />
+        <h:message for="phoneNumber" style="color: red;" />
+
+        <!-- Login Button -->
+        <h:commandButton value="Login" action="#{login.login}" />
+
+        <!-- Error or Success Messages -->
+        <h:messages style="color: green;" />
+    </h:form>
+</h:body>
+</html>

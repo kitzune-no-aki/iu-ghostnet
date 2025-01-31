@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Ghost Net Dashboard</title>
+</h:head>
+
+<h:body>
+    <h:form id="filterForm">
+        <h:outputLabel for="statusFilter" value="Filter by Status: " />
+        <h:selectOneMenu id="statusFilter" value="#{dashboard.selectedStatusFilter}">
+            <f:selectItem itemLabel="All" itemValue="" />
+            <f:selectItem itemLabel="Reported" itemValue="Reported" />
+            <f:selectItem itemLabel="Missing" itemValue="Missing" />
+            <f:selectItem itemLabel="Retrieved" itemValue="Retrieved" />
+            <f:selectItem itemLabel="Reported" itemValue="Reported" />
+        </h:selectOneMenu>
+
+        <h:commandButton value="Apply Filter" action="#{dashboard.applyFilter}" update="dashboardForm:netTable" />
+    </h:form>
+
+    <h:form id="dashboardForm">
+        <h1>Dashboard - Reported Ghost Nets</h1>
+
+        <p:dataTable id="netTable" value="#{dashboard.allNets}" var="net" border="1">
+            <p:column headerText="ID">
+                <h:outputText value="#{net.id}" />
+            </p:column>
+            <p:column headerText="Latitude">
+                <h:outputText value="#{net.latitude}" />
+            </p:column>
+            <p:column headerText="Longitude">
+                <h:outputText value="#{net.longitude}" />
+            </p:column>
+            <p:column headerText="Size">
+                <h:outputText value="#{net.estimatedSize}" />
+            </p:column>
+            <p:column headerText="Status">
+                <h:outputText value="#{net.status}" />
+            </p:column>
+            <p:column headerText="Reporter">
+                <h:outputText value="#{net.reporterName}" />
+            </p:column>
+            <p:column headerText="Retrieving Person">
+                <h:outputText value="#{net.retrievingPerson != null
+                          ? net.retrievingPerson.name.concat(' ')
+                            .concat(net.retrievingPerson.surname).concat(' (')
+                            .concat(net.retrievingPerson.phoneNumber).concat(')')
+                          : 'None'}" />
+            </p:column>
+
+            <p:column headerText="Actions">
+                <h:form id="actionForm_#{net.id}">
+                    <!-- Claim Button -->
+                    <h:commandButton value="Claim"
+                                     action="#{dashboard.claimNet}"
+                                     rendered="#{net.retrievingPerson == null and
+                                     login.loggedInUser != null and
+                                     login.loggedInUser.phoneNumber != null and
+                                     login.loggedInUser.phoneNumber != ''}">
+                        <f:setPropertyActionListener target="#{dashboard.selectedNetId}" value="#{net.id}" />
+                        <p:ajax event="click" update="dashboardForm:netTable" process="@this" />
+                    </h:commandButton>
+
+                    <!-- Report Missing Button -->
+                    <h:commandButton value="Report Missing"
+                                     action="#{dashboard.reportMissing}"
+                                     rendered="#{net.retrievingPerson != null and
+                                     net.retrievingPerson.id == login.loggedInUser.id and
+                                     net.status != 'Missing' and
+                                     net.status != 'Retrieved'}">
+                        <f:setPropertyActionListener target="#{dashboard.selectedNetId}" value="#{net.id}" />
+                        <p:ajax event="click" update="dashboardForm:netTable" process="@this" />
+                    </h:commandButton>
+
+                    <!-- Report Retrieved Button -->
+                    <h:commandButton value="Report Retrieved"
+                                     action="#{dashboard.reportRetrieved}"
+                                     rendered="#{net.retrievingPerson != null and
+                                     net.retrievingPerson.id == login.loggedInUser.id and
+                                     net.status != 'Retrieved' and
+                                     net.status != 'Missing'}">
+                        <f:setPropertyActionListener target="#{dashboard.selectedNetId}" value="#{net.id}" />
+                        <p:ajax event="click" update="dashboardForm:netTable" process="@this" />
+                    </h:commandButton>
+
+                    <!-- Cancel Button -->
+                    <h:commandButton value="Cancel"
+                                     action="#{dashboard.cancel}"
+                                     rendered="#{net.retrievingPerson != null and
+                                     net.retrievingPerson.id == login.loggedInUser.id and
+                                     net.status != 'Retrieved' and
+                                     net.status != 'Missing'}">
+                        <f:setPropertyActionListener target="#{dashboard.selectedNetId}" value="#{net.id}" />
+                        <p:ajax event="click" update="dashboardForm:netTable" process="@this" />
+                    </h:commandButton>
+                </h:form>
+            </p:column>
+        </p:dataTable>
+
+        <h:commandButton value="Back to Home" action="index.xhtml?faces-redirect=true" />
+    </h:form>
+</h:body>
+</html>

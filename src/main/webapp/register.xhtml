@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<h:head>
+    <title>Register</title>
+</h:head>
+
+<h:body>
+    <h:form>
+        <h1>Register</h1>
+
+        <!-- Name -->
+        <h:outputLabel for="name" value="First Name: " />
+        <h:inputText id="name" value="#{register.name}" required="true" />
+        <br />
+
+        <!-- Surname -->
+        <h:outputLabel for="surname" value="Last Name: " />
+        <h:inputText id="surname" value="#{register.surname}" required="true" />
+        <br />
+
+        <!-- Phone Number -->
+        <h:outputLabel for="phoneNumber" value="Phone Number: " />
+        <h:inputText id="phoneNumber" value="#{register.phoneNumber}" />
+        <br />
+
+        <!-- Submit Button -->
+        <h:commandButton value="Register" action="#{register.register}" />
+
+        <!-- Display Messages -->
+        <h:messages />
+    </h:form>
+</h:body>
+</html>
